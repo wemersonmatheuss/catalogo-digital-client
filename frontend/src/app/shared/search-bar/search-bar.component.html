@@ -1,0 +1,21 @@
+@if (variant === 'icon') {
+  <div class="icon-search">
+    <button type="button" class="icon-toggle" (click)="toggle()" aria-label="Buscar peça">
+      <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+    </button>
+    @if (open()) {
+      <form class="search compact" [formGroup]="form" (ngSubmit)="search()" role="search">
+        <label class="sr-only" for="busca-catalogo-icone">Buscar peça</label>
+        <input id="busca-catalogo-icone" type="search" formControlName="term" placeholder="Buscar peça" autocomplete="off" />
+      </form>
+    }
+  </div>
+} @else {
+  <form class="search" [formGroup]="form" (ngSubmit)="search()" role="search">
+    <label class="sr-only" for="busca-catalogo">Buscar peça</label>
+    <button type="submit" aria-label="Buscar">
+      <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+    </button>
+    <input id="busca-catalogo" type="search" formControlName="term" placeholder="Buscar peça" autocomplete="off" />
+  </form>
+}

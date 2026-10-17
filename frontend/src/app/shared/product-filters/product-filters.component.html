@@ -1,0 +1,49 @@
+<form class="filters" [formGroup]="form" (ngSubmit)="submit()">
+  <fieldset>
+    <legend>Segmento</legend>
+    <div class="choices">
+      <button type="button" [class.active]="!gender" (click)="chooseGender(undefined)">Todos</button>
+      <button type="button" [class.active]="gender === 'female'" (click)="chooseGender('female')">{{ labels.female }}</button>
+      <button type="button" [class.active]="gender === 'male'" (click)="chooseGender('male')">{{ labels.male }}</button>
+    </div>
+  </fieldset>
+
+  @if (categories.length) {
+    <fieldset>
+      <legend>Categoria</legend>
+      <div class="choices">
+        <button type="button" [class.active]="!categorySlug" (click)="chooseCategory(undefined)">Todas</button>
+        @for (category of categories; track category.id) {
+          <button type="button" [class.active]="category.slug === categorySlug" (click)="chooseCategory(category.slug)">
+            {{ category.name }}
+          </button>
+        }
+      </div>
+    </fieldset>
+  }
+
+  <fieldset>
+    <legend>Preço</legend>
+    <div class="prices">
+      <label>
+        Mínimo
+        <input type="number" min="0" step="0.01" formControlName="minPrice" inputmode="decimal" />
+      </label>
+      <label>
+        Máximo
+        <input type="number" min="0" step="0.01" formControlName="maxPrice" inputmode="decimal" />
+      </label>
+    </div>
+  </fieldset>
+
+  <label class="availability">
+    Disponibilidade
+    <select formControlName="available">
+      <option value="all">Todas as peças</option>
+      <option value="yes">Disponíveis</option>
+      <option value="no">Indisponíveis</option>
+    </select>
+  </label>
+
+  <button class="apply" type="submit">Aplicar filtros</button>
+</form>

@@ -1,0 +1,21 @@
+@if (current) {
+  <figure class="gallery">
+    <div class="thumbs">
+      @for (image of images; track image.url; let index = $index) {
+        <button
+          type="button"
+          [class.active]="index === selected"
+          [attr.aria-label]="'Ver imagem ' + (index + 1)"
+          [attr.aria-current]="index === selected"
+          (click)="select(index)"
+        >
+          <img [src]="image.url" alt="" />
+        </button>
+      }
+    </div>
+    <div class="stage" (mouseenter)="zoom = true" (mouseleave)="zoom = false" (mousemove)="move($event)">
+      <img [src]="current.url" [alt]="current.alt" [class.zoomed]="zoom" [style.transform-origin]="origin" />
+      <p>Passe o mouse sobre a foto para ampliar</p>
+    </div>
+  </figure>
+}

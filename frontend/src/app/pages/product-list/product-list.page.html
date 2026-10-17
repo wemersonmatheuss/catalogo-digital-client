@@ -1,0 +1,41 @@
+<header class="page-head">
+  <p class="eyebrow">Catálogo</p>
+  <h1>{{ state().title }}</h1>
+  @if (state().search) {
+    <p>Busca pelo nome da peça.</p>
+  }
+</header>
+
+<div class="layout">
+  <button type="button" class="filters-toggle" (click)="toggleFilters()" [attr.aria-expanded]="filtersOpen()">
+    Filtros
+  </button>
+  <aside class="filters" [class.open]="filtersOpen()">
+    <app-product-filters
+      [categories]="state().gender ? state().categories : []"
+      [gender]="state().gender"
+      [categorySlug]="state().categorySlug"
+      [value]="state().filters"
+      (genderChange)="onGender($event)"
+      (categoryChange)="onCategory($event)"
+      (apply)="onApply($event)"
+    />
+  </aside>
+
+  <div class="results">
+    @if (state().status === 'loading') {
+      <app-loading-state />
+    } @else if (state().status === 'error') {
+      <app-error-state title="Não foi possível abrir esta lista." />
+    } @else if (state().categoryMissing) {
+      <app-empty-state title="Categoria não encontrada." message="Escolha outra categoria no menu." />
+    } @else if (state().products.length === 0) {
+      <app-empty-state
+        [title]="state().search ? 'Nenhum produto encontrado.' : 'Nenhuma peça nesta seleção.'"
+        message="Ajuste a busca ou os filtros para ver outras peças."
+      />
+    } @else {
+      <app-product-grid [products]="state().products" [categories]="state().categories" />
+    }
+  </div>
+</div>

@@ -1,0 +1,125 @@
+@if (state().status === 'loading') {
+  <app-loading-state label="Carregando a peça…" />
+} @else if (state().status === 'error') {
+  <app-error-state title="Não foi possível abrir esta peça." />
+} @else if (!state().product) {
+  <app-error-state title="Peça não encontrada." message="Ela pode ter sido removida do catálogo." />
+} @else {
+  <nav class="crumbs" aria-label="Caminho">
+    <a routerLink="/">Página inicial</a>
+    <span aria-hidden="true">›</span>
+    <a [routerLink]="['/produtos', state().product!.gender === 'female' ? 'feminino' : 'masculino']">
+      {{ labels[state().product!.gender] }}
+    </a>
+    @if (categoryLink(state()); as link) {
+      <span aria-hidden="true">›</span>
+      <a [routerLink]="link">{{ state().category?.name }}</a>
+    }
+    <span aria-hidden="true">›</span>
+    <span class="current">{{ state().product!.name }}</span>
+    @if (state().next; as next) {
+      <a class="next" [routerLink]="['/produto', next.slug]">Próximo ›</a>
+    }
+  </nav>
+
+  <article class="sheet">
+    <app-product-gallery [images]="state().product!.images" />
+
+    <div class="buy">
+      <p class="status">{{ state().product!.available ? 'Disponível para consulta' : 'Indisponível' }}</p>
+      <h1>{{ state().product!.name }}</h1>
+
+      <p class="label">Tamanho</p>
+      <div class="choices">
+        @for (size of state().product!.sizes; track size) {
+          <button type="button" [class.picked]="size === pickedSize()" (click)="pickedSize.set(size)">{{ size }}</button>
+        }
+      </div>
+
+      <p class="label">Cor</p>
+      <div class="choices">
+        @for (color of state().product!.colors; track color) {
+          <button type="button" [class.picked]="color === pickedColor()" (click)="pickedColor.set(color)">{{ color }}</button>
+        }
+      </div>
+
+      @if (discount(); as percent) {
+        <p class="offer">
+          <span>{{ percent }}% OFF</span>
+          <s>{{ state().product!.compareAtPrice | brl }}</s>
+        </p>
+      }
+      <div class="price-row">
+        <p class="price">{{ state().product!.price | brl }}</p>
+        <button
+          type="button"
+          class="bag"
+          [class.in]="inBag()"
+          [disabled]="!state().product!.available"
+          [attr.aria-label]="inBag() ? 'Peça já está no carrinho' : 'Adicionar ao carrinho'"
+          (click)="addToBag()"
+        >
+          <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+      @if (inBag()) {
+        <p class="price-note">Adicionada ao carrinho.</p>
+      }
+      <app-whatsapp-button
+        variant="block"
+        label="Falar sobre esta peça"
+        [productName]="state().product!.name"
+        [note]="interestNote()"
+      />
+    </div>
+
+    <section class="description">
+      <h2>Descrição</h2>
+      <p>{{ state().product!.description }}</p>
+      <ul class="specs">
+        <li>
+          <span>Categoria</span>
+          <strong>{{ state().category?.name }}</strong>
+        </li>
+        <li>
+          <span>Público</span>
+          <strong>{{ labels[state().product!.gender] }}</strong>
+        </li>
+        <li>
+          <span>Cores</span>
+          <strong>{{ state().product!.colors.join(', ') }}</strong>
+        </li>
+        <li>
+          <span>Tamanhos</span>
+          <strong>{{ state().product!.sizes.join(', ') }}</strong>
+        </li>
+      </ul>
+    </section>
+  </article>
+
+  @if (state().related.length) {
+    <section class="related">
+      <h2>Talvez você goste</h2>
+      <app-product-grid layout="rail" [products]="state().related" [categories]="state().categories" />
+    </section>
+  }
+
+  <ul class="notes">
+    <li>
+      <strong>Consulta da peça</strong>
+      <span>Preço, tamanho e cor nesta página.</span>
+    </li>
+    <li>
+      <strong>Fale com a loja</strong>
+      <span>O contato é pelo WhatsApp, quando o número estiver configurado.</span>
+    </li>
+    <li>
+      <strong>Ficha simples</strong>
+      <span>Descrição e opções cadastradas no painel.</span>
+    </li>
+    <li>
+      <strong>Sem pagamento aqui</strong>
+      <span>Este catálogo não fecha pedido nem cobra.</span>
+    </li>
+  </ul>
+}

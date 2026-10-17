@@ -1,0 +1,78 @@
+<header class="page-head">
+  <div>
+    <small class="eyebrow">Sua seleção</small>
+    <h1>Carrinho</h1>
+  </div>
+  <a routerLink="/produtos">Continuar vendo</a>
+</header>
+
+@if (bag.items().length === 0) {
+  <div class="empty-state">
+    <p class="empty-title">Nenhuma peça no carrinho</p>
+    <p class="empty-sub">Navegue pelo catálogo e adicione o que gostar.</p>
+    <a class="browse-link" routerLink="/produtos">Ver coleção</a>
+  </div>
+} @else {
+  <div class="layout">
+    <!-- Coluna esquerda: itens -->
+    <section class="items-col">
+      <ul class="items">
+        @for (item of bag.items(); track item.id) {
+          <li class="item-card">
+            <a class="item-img-link" [routerLink]="['/produto', item.slug]">
+              <img [src]="item.imageUrl" [alt]="item.name" />
+            </a>
+            <div class="item-info">
+              <strong class="item-name">{{ item.name }}</strong>
+              <p class="item-options">{{ item.size || 'Sem tamanho' }}{{ item.color ? ' · ' + item.color : '' }}</p>
+              <p class="item-price">{{ item.price | brl }}</p>
+            </div>
+            <button class="remove-btn" type="button" (click)="bag.remove(item.id)" aria-label="Tirar {{ item.name }}">✕</button>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <!-- Coluna direita: dados + botão -->
+    <aside class="checkout-col">
+      <div class="checkout-card">
+        <h2>Seus dados</h2>
+        <p class="checkout-hint">Preencha para facilitar o atendimento no WhatsApp.</p>
+
+        <label class="field-label">
+          Nome
+          <input class="field-input" type="text" [(ngModel)]="customerName" placeholder="Seu nome" autocomplete="name" />
+        </label>
+
+        <label class="field-label">
+          Forma de pagamento
+          <select class="field-input" [(ngModel)]="paymentMethod">
+            <option value="">Não informado</option>
+            <option value="PIX">PIX</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Parcelado">Parcelado</option>
+          </select>
+        </label>
+
+        <div class="summary-row">
+          <span>{{ bag.items().length }} {{ bag.items().length === 1 ? 'peça' : 'peças' }}</span>
+          <strong>{{ total() | brl }}</strong>
+        </div>
+        <p class="summary-note">Total estimado · sem frete</p>
+
+        <button type="button" class="send" [disabled]="sending()" (click)="send()">
+          {{ sending() ? 'Preparando…' : 'Falar no WhatsApp' }}
+        </button>
+
+        @if (savedId(); as id) {
+          <p class="code">Código do carrinho: <strong>{{ id }}</strong></p>
+        }
+        @if (error(); as message) {
+          <p class="error" role="alert">{{ message }}</p>
+        }
+      </div>
+    </aside>
+  </div>
+}

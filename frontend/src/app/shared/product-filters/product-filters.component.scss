@@ -1,0 +1,82 @@
+.filters {
+  display: grid;
+  gap: 1rem;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend,
+.availability {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sv-muted);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.choices button,
+.apply,
+input,
+select {
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+.choices button {
+  padding: 0 0.75rem;
+  border: 1px solid var(--sv-line);
+  background: #fff;
+  cursor: pointer;
+}
+
+.choices button.active {
+  border-color: var(--sv-accent);
+  background: var(--sv-accent);
+  color: #fff;
+}
+
+.apply {
+  border: 0;
+  background: var(--sv-accent);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 0 0.7rem;
+  border: 1px solid var(--sv-line);
+  background: #fff;
+}
+

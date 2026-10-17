@@ -1,0 +1,28 @@
+<footer class="footer">
+  <div class="inner">
+    <div class="cols">
+      <section>
+        <h2>A loja</h2>
+        <p>Catálogo de roupas da Sempre-Viva, em Gravatá, Pernambuco. Peças para o dia a dia, com atendimento pelo WhatsApp.</p>
+      </section>
+      <section>
+        <h2>Catálogo</h2>
+        <nav aria-label="Atalhos do catálogo">
+          <a routerLink="/">Início</a>
+          <a routerLink="/produtos/feminino">Feminino</a>
+          <a routerLink="/produtos/masculino">Masculino</a>
+          <a routerLink="/produtos">Todas as peças</a>
+        </nav>
+      </section>
+      <section>
+        <h2>Contato</h2>
+        <p>Gravatá, Pernambuco</p>
+        @if (whatsapp) {
+          <a class="wa" [href]="whatsapp" target="_blank" rel="noopener noreferrer">Falar com a loja</a>
+        }
+      </section>
+    </div>
+  </div>
+  <p class="mark" aria-hidden="true">Sempre-Viva</p>
+</footer>
+<app-whatsapp-button class="float" label="WhatsApp" variant="float" />

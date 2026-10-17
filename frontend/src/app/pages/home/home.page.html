@@ -1,0 +1,113 @@
+@if (banners().status === 'loading' || featured().status === 'loading') {
+  <app-loading-state label="Carregando a vitrine…" />
+} @else if (banners().status === 'error' || featured().status === 'error') {
+  <app-error-state title="Não foi possível abrir o catálogo." message="Confira se a API local está em execução." />
+} @else {
+  @if (heroes().length) {
+    <section class="hero" aria-label="Destaque da loja" aria-roledescription="carrossel">
+      <div class="hero-copy">
+        <h1>{{ heroes()[0].title }}</h1>
+        <p>{{ heroes()[0].subtitle }}</p>
+      </div>
+      <div class="hero-photo">
+        @for (banner of heroes(); track banner.id; let i = $index) {
+          <a
+            class="hero-slide"
+            [class.is-active]="slide() === i"
+            [routerLink]="banner.link"
+            [attr.aria-hidden]="slide() !== i"
+          >
+            <img [src]="banner.imageUrl" [alt]="banner.title" />
+          </a>
+        }
+      </div>
+      <a class="hero-cta" [routerLink]="heroes()[0].link">Explorar a coleção</a>
+      @if (heroes().length > 1) {
+        <div class="hero-dots">
+          @for (banner of heroes(); track banner.id; let i = $index) {
+            <button
+              type="button"
+              [class.is-active]="slide() === i"
+              [attr.aria-label]="'Imagem ' + (i + 1)"
+              (click)="goTo(i)"
+            ></button>
+          }
+        </div>
+      }
+    </section>
+  }
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">
+        <small class="eyebrow">Últimas chegadas</small>
+        <h2>Novidades</h2>
+      </div>
+      <a routerLink="/produtos">Ver todos</a>
+    </div>
+    @if (recent().data.length === 0) {
+      <app-empty-state title="Nenhuma novidade no momento." message="As peças cadastradas no painel aparecem aqui." />
+    } @else {
+      <app-product-grid layout="rail" [products]="recent().data" [categories]="categories().data" />
+    }
+  </section>
+
+  @if (strips().length) {
+    <section class="strips" aria-label="Banners de categoria">
+      @for (banner of strips(); track banner.id) {
+        <a [routerLink]="banner.link">
+          <img [src]="banner.imageUrl" [alt]="banner.title" />
+          <span>
+            <small>{{ banner.subtitle }}</small>
+            <strong>{{ banner.title }}</strong>
+          </span>
+        </a>
+      }
+    </section>
+  }
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">
+        <small class="eyebrow">Mais vendidos</small>
+        <h2>Em destaque</h2>
+      </div>
+      <a routerLink="/produtos">Ver todos</a>
+    </div>
+    @if (featured().data.length === 0) {
+      <app-empty-state title="Nenhum destaque no momento." message="Marque uma peça como destaque no painel." />
+    } @else {
+      <app-product-grid layout="rail" [products]="featured().data" [categories]="categories().data" />
+    }
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">
+        <small class="eyebrow">Roupas e acessórios</small>
+        <h2>Feminino</h2>
+      </div>
+      <a [routerLink]="femalePath">Ver todos</a>
+    </div>
+    <div class="category-grid">
+      @for (category of categoriesFor('female'); track category.id) {
+        <app-category-card [category]="category" />
+      }
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">
+        <small class="eyebrow">Roupas e acessórios</small>
+        <h2>Masculino</h2>
+      </div>
+      <a [routerLink]="malePath">Ver todos</a>
+    </div>
+    <div class="category-grid">
+      @for (category of categoriesFor('male'); track category.id) {
+        <app-category-card [category]="category" />
+      }
+    </div>
+  </section>
+}

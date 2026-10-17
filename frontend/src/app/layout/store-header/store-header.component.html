@@ -1,0 +1,33 @@
+<a class="skip" href="#conteudo">Ir para o conteúdo</a>
+<header class="header">
+  <div class="bar">
+    <button
+      type="button"
+      class="menu-button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      [attr.aria-label]="menuOpen() ? 'Fechar menu' : 'Abrir menu'"
+    >
+      <ion-icon [name]="menuOpen() ? 'close-outline' : 'menu-outline'" aria-hidden="true"></ion-icon>
+    </button>
+
+    <nav id="menu-principal" [class.open]="menuOpen()" aria-label="Seções do catálogo">
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Início</a>
+      <a routerLink="/produtos/feminino" routerLinkActive="is-active" (click)="closeMenu()">Feminino</a>
+      <a routerLink="/produtos/masculino" routerLinkActive="is-active" (click)="closeMenu()">Masculino</a>
+      <a routerLink="/produtos" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Peças</a>
+    </nav>
+
+    <a class="brand" routerLink="/" (click)="closeMenu()">Sempre-Viva</a>
+
+    <div class="actions">
+      <app-search-bar variant="icon" />
+      <a class="bag-link" routerLink="/sacola" (click)="closeMenu()" aria-label="Carrinho">
+        <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+        @if (bag.count()) {
+          <span>{{ bag.count() }}</span>
+        }
+      </a>
+    </div>
+  </div>
+</header>

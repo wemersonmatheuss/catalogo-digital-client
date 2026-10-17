@@ -1,0 +1,20 @@
+ion-app {
+  position: relative;
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
+  contain: none;
+}
+
+.shell {
+  min-height: 100%;
+  background: #fff;
+  color: var(--sv-ink);
+}
+
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 2.5rem;
+  background: #fff;
+}

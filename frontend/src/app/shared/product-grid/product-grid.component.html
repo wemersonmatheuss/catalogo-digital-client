@@ -1,0 +1,7 @@
+<ul class="grid" [class.rail]="layout === 'rail'">
+  @for (product of products; track product.id) {
+    <li>
+      <app-product-card [product]="product" [categoryName]="categoryName(product)" />
+    </li>
+  }
+</ul>

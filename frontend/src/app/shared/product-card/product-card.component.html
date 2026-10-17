@@ -1,0 +1,36 @@
+<article class="card" [class.unavailable]="!product.available">
+  <a class="media" [routerLink]="['/produto', product.slug]">
+    @if (image) {
+      <img [src]="image.url" [alt]="image.alt" />
+    }
+    @if (!product.available) {
+      <span class="badge">Indisponível</span>
+    }
+  </a>
+  <div class="body">
+    <a class="copy" [routerLink]="['/produto', product.slug]">
+      @if (categoryName) {
+        <span class="category">{{ categoryName }}</span>
+      }
+      <span class="name">{{ product.name }}</span>
+      @if (discount; as percent) {
+        <span class="offer">
+          <span class="off">{{ percent }}% OFF</span>
+          <span class="compare">{{ product.compareAtPrice | brl }}</span>
+        </span>
+      }
+    </a>
+    <div class="price-row">
+      <span class="price">{{ product.price | brl }}</span>
+      <button
+        type="button"
+        class="cart"
+        [disabled]="!product.available"
+        [attr.aria-label]="'Adicionar ' + product.name + ' ao carrinho'"
+        (click)="addToBag()"
+      >
+        <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+      </button>
+    </div>
+  </div>
+</article>
