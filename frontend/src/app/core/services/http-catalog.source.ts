@@ -1,14 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
-import { environment } from '../../../environments/environment';
+import { CatalogApiService } from '../api/catalog-api.service';
 import { Banner, CatalogSnapshot, Category, Product, ProductQuery } from '../models/catalog.models';
 import { CatalogSource } from './catalog-source';
 
 @Injectable()
 export class HttpCatalogSource extends CatalogSource {
-  private readonly http = inject(HttpClient);
+  private readonly api = inject(CatalogApiService);
 
   getCategories(): Observable<Category[]> {
     return this.catalog().pipe(
@@ -48,7 +47,7 @@ export class HttpCatalogSource extends CatalogSource {
   }
 
   private catalog(): Observable<CatalogSnapshot> {
-    return this.http.get<CatalogSnapshot>(`${environment.apiUrl}/catalog`);
+    return this.api.getCatalog();
   }
 }
 
