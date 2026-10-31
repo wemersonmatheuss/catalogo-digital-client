@@ -1,16 +1,16 @@
 <header class="page-head">
   <div>
-    <small class="eyebrow">Sua seleção</small>
-    <h1>Carrinho</h1>
+    <small class="eyebrow">{{ site().bag.eyebrow }}</small>
+    <h1>{{ site().bag.title }}</h1>
   </div>
-  <a routerLink="/produtos">Continuar vendo</a>
+  <a routerLink="/produtos">{{ site().bag.continueLabel }}</a>
 </header>
 
 @if (bag.items().length === 0) {
   <div class="empty-state">
-    <p class="empty-title">Nenhuma peça no carrinho</p>
-    <p class="empty-sub">Navegue pelo catálogo e adicione o que gostar.</p>
-    <a class="browse-link" routerLink="/produtos">Ver coleção</a>
+    <p class="empty-title">{{ site().bag.emptyTitle }}</p>
+    <p class="empty-sub">{{ site().bag.emptyMessage }}</p>
+    <a class="browse-link" routerLink="/produtos">{{ site().bag.browseLabel }}</a>
   </div>
 } @else {
   <div class="layout">
@@ -36,8 +36,8 @@
     <!-- Coluna direita: dados + botão -->
     <aside class="checkout-col">
       <div class="checkout-card">
-        <h2>Seus dados</h2>
-        <p class="checkout-hint">Preencha para facilitar o atendimento no WhatsApp.</p>
+        <h2>{{ site().bag.dataTitle }}</h2>
+        <p class="checkout-hint">{{ site().bag.dataHint }}</p>
 
         <label class="field-label">
           Nome
@@ -63,7 +63,7 @@
         <p class="summary-note">Total estimado · sem frete</p>
 
         <button type="button" class="send" [disabled]="sending()" (click)="send()">
-          {{ sending() ? 'Preparando…' : 'Falar no WhatsApp' }}
+          {{ sending() ? 'Preparando…' : site().bag.sendLabel }}
         </button>
 
         @if (savedId(); as id) {

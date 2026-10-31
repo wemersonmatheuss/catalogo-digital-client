@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 
+import { defaultSiteContent } from '../../core/models/site-content';
+import { CatalogService } from '../../core/services/catalog.service';
 import { whatsappUrl } from '../../core/utils/whatsapp';
 import { WhatsappButtonComponent } from '../../shared/whatsapp-button/whatsapp-button.component';
 
@@ -13,4 +16,5 @@ import { WhatsappButtonComponent } from '../../shared/whatsapp-button/whatsapp-b
 })
 export class StoreFooterComponent {
   readonly whatsapp = whatsappUrl();
+  readonly site = toSignal(inject(CatalogService).getSite(), { initialValue: defaultSiteContent() });
 }

@@ -1,8 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonIcon } from '@ionic/angular';
 
+import { defaultSiteContent } from '../../core/models/site-content';
 import { BagService } from '../../core/services/bag.service';
+import { CatalogService } from '../../core/services/catalog.service';
 import { SearchBarComponent } from '../../shared/search-bar/search-bar.component';
 
 @Component({
@@ -14,6 +17,7 @@ import { SearchBarComponent } from '../../shared/search-bar/search-bar.component
 })
 export class StoreHeaderComponent {
   readonly bag = inject(BagService);
+  readonly site = toSignal(inject(CatalogService).getSite(), { initialValue: defaultSiteContent() });
   readonly menuOpen = signal(false);
 
   toggleMenu(): void {

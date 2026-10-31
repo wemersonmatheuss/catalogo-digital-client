@@ -3,6 +3,7 @@ import { Observable, map } from 'rxjs';
 
 import { CatalogApiService } from '../api/catalog-api.service';
 import { Banner, CatalogSnapshot, Category, Product, ProductQuery } from '../models/catalog.models';
+import { defaultSiteContent, SiteContent } from '../models/site-content';
 import { CatalogSource } from './catalog-source';
 
 @Injectable()
@@ -11,7 +12,11 @@ export class HttpCatalogSource extends CatalogSource {
 
   getCategories(): Observable<Category[]> {
     return this.catalog().pipe(
-      map((data) => data.categories.filter((category) => category.status === 'active')),
+      map((data) =>
+        data.categories
+          .filter((category) => category.status === 'active')
+          .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0) || a.name.localeCompare(b.name, 'pt-BR')),
+      ),
     );
   }
 
@@ -44,6 +49,10 @@ export class HttpCatalogSource extends CatalogSource {
           .sort((a, b) => a.displayOrder - b.displayOrder),
       ),
     );
+  }
+
+  getSite(): Observable<SiteContent> {
+    return this.catalog().pipe(map((data) => data.content ?? defaultSiteContent()));
   }
 
   private catalog(): Observable<CatalogSnapshot> {

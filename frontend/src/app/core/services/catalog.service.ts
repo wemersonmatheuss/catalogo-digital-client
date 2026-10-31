@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { Category, Gender, Product, ProductQuery, Banner } from '../models/catalog.models';
+import { SiteContent } from '../models/site-content';
 import { CatalogSource } from './catalog-source';
 
 @Injectable({ providedIn: 'root' })
@@ -36,6 +37,10 @@ export class CatalogService {
 
   getBanners(): Observable<Banner[]> {
     return this.source.getBanners();
+  }
+
+  getSite(): Observable<SiteContent> {
+    return this.source.getSite();
   }
 
   getCategory(gender: Gender, slug: string): Observable<Category | null> {

@@ -12,13 +12,17 @@
     </button>
 
     <nav id="menu-principal" [class.open]="menuOpen()" aria-label="Seções do catálogo">
-      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Início</a>
-      <a routerLink="/produtos/feminino" routerLinkActive="is-active" (click)="closeMenu()">Feminino</a>
-      <a routerLink="/produtos/masculino" routerLinkActive="is-active" (click)="closeMenu()">Masculino</a>
-      <a routerLink="/produtos" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Peças</a>
+      @for (item of site().nav; track item.id) {
+        <a
+          [routerLink]="item.href"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: item.exact }"
+          (click)="closeMenu()"
+        >{{ item.label }}</a>
+      }
     </nav>
 
-    <a class="brand" routerLink="/" (click)="closeMenu()">Sempre-Viva</a>
+    <a class="brand" routerLink="/" (click)="closeMenu()">{{ site().brand }}</a>
 
     <div class="actions">
       <app-search-bar variant="icon" />

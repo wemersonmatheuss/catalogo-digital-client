@@ -2,27 +2,26 @@
   <div class="inner">
     <div class="cols">
       <section>
-        <h2>A loja</h2>
-        <p>Catálogo de roupas da Sempre-Viva, em Gravatá, Pernambuco. Peças para o dia a dia, com atendimento pelo WhatsApp.</p>
+        <h2>{{ site().footer.aboutTitle }}</h2>
+        <p>{{ site().footer.aboutText }}</p>
       </section>
       <section>
-        <h2>Catálogo</h2>
+        <h2>{{ site().footer.catalogTitle }}</h2>
         <nav aria-label="Atalhos do catálogo">
-          <a routerLink="/">Início</a>
-          <a routerLink="/produtos/feminino">Feminino</a>
-          <a routerLink="/produtos/masculino">Masculino</a>
-          <a routerLink="/produtos">Todas as peças</a>
+          @for (item of site().nav; track item.id) {
+            <a [routerLink]="item.href">{{ item.label }}</a>
+          }
         </nav>
       </section>
       <section>
-        <h2>Contato</h2>
-        <p>Gravatá, Pernambuco</p>
+        <h2>{{ site().footer.contactTitle }}</h2>
+        <p>{{ site().footer.city }}</p>
         @if (whatsapp) {
-          <a class="wa" [href]="whatsapp" target="_blank" rel="noopener noreferrer">Falar com a loja</a>
+          <a class="wa" [href]="whatsapp" target="_blank" rel="noopener noreferrer">{{ site().footer.whatsappLabel }}</a>
         }
       </section>
     </div>
   </div>
-  <p class="mark" aria-hidden="true">Sempre-Viva</p>
+  <p class="mark" aria-hidden="true">{{ site().footer.mark }}</p>
 </footer>
-<app-whatsapp-button class="float" label="WhatsApp" variant="float" />
+<app-whatsapp-button class="float" [label]="site().footer.floatLabel" variant="float" />

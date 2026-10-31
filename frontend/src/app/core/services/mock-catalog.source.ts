@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { DEMO_CATEGORIES, DEMO_PRODUCTS } from '../data/demo-catalog';
+import { defaultSiteContent, SiteContent } from '../models/site-content';
 import { Banner, Category, Product, ProductQuery } from '../models/catalog.models';
 import { CatalogSource } from './catalog-source';
 
@@ -61,6 +62,10 @@ export class MockCatalogSource extends CatalogSource {
 
   getBanners(): Observable<Banner[]> {
     return of([]).pipe(delay(120));
+  }
+
+  getSite(): Observable<SiteContent> {
+    return of(defaultSiteContent()).pipe(delay(120));
   }
 }
 

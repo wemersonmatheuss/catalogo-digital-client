@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
+import { defaultSiteContent } from '../../core/models/site-content';
 import { CartApiService } from '../../core/api/cart-api.service';
 import { BagService } from '../../core/services/bag.service';
+import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
 import { formatCartMessage, whatsappMessageUrl } from '../../core/utils/whatsapp';
 import { BrlPipe } from '../../shared/brl.pipe';
@@ -19,6 +22,7 @@ import { BrlPipe } from '../../shared/brl.pipe';
 export class BagPage {
   private readonly carts = inject(CartApiService);
   readonly bag = inject(BagService);
+  readonly site = toSignal(inject(CatalogService).getSite(), { initialValue: defaultSiteContent() });
   readonly sending = signal(false);
   readonly error = signal<string | null>(null);
   readonly savedId = signal<string | null>(null);

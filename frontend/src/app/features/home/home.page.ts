@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 
+import { defaultSiteContent } from '../../core/models/site-content';
 import { GENDER_LABEL, genderPath } from '../../core/models/catalog.labels';
 import { CatalogService } from '../../core/services/catalog.service';
 import { SeoService } from '../../core/services/seo.service';
@@ -43,11 +44,15 @@ export class HomePage {
   readonly heroes = computed(() => this.banners().data.filter((banner) => banner.placement === 'hero'));
   readonly strips = computed(() => this.banners().data.filter((banner) => banner.placement === 'middle'));
 
+  private readonly seo = inject(SeoService);
+  readonly site = toSignal(this.catalog.getSite(), { initialValue: defaultSiteContent() });
+  readonly blocks = computed(() => this.site().blocks.filter((block) => block.visible));
+
   constructor() {
-    inject(SeoService).set(
-      'Sempre-Viva',
-      'Catálogo digital da Sempre-Viva, loja de roupas em Gravatá, Pernambuco.',
-    );
+    effect(() => {
+      const site = this.site();
+      this.seo.set(site.seoTitle, site.seoDescription);
+    });
     this.startCarousel();
     this.destroyRef.onDestroy(() => this.stopCarousel());
   }
